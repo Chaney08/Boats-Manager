@@ -23,36 +23,52 @@ public class BoatControllerTests {
     @Resource
     private BoatRepository boatRepo;
 
-    Boat boat = new Boat();
+
 
 
     @Before
     public void setup() {
-        boat.setBoatName("Test");
+
+    }
+
+    @Test
+    public void boatRegistration() {
+        Boat boat = new Boat();
+        boat.setBoatName("TestRegistration");
         boat.setDescription("This is a description");
         boat.setWeight(1.0);
         boatRepo.save(boat);
-    }
-    @Test
-    public void boatRegistration() {
 
         //The save is done already so we just need to verify it worked
-        Boat boat2 = boatRepo.findByBoatName("Test");
-        assertEquals("Test", boat2.getBoatName());
+        Boat boat2 = boatRepo.findByBoatName("TestRegistration");
+        assertEquals("TestRegistration", boat2.getBoatName());
     }
-
     @Test
     public void deleteBoat() {
+        Boat boat = new Boat();
+        boat.setBoatName("TestDeletion");
+        boat.setDescription("This is a description");
+        boat.setWeight(1.0);
+        boatRepo.save(boat);
         boatRepo.deleteBoatByBoatId(boat.getBoatId());
-        assertNull(boatRepo.findByBoatName("Test"));
+        assertNull(boatRepo.findByBoatName("TestDeletion"));
     }
     @Test
     public void boatUpdate(){
+        Boat boat = new Boat();
+        boat.setBoatName("TestUpdate");
+        boat.setDescription("This is a description");
+        boat.setWeight(1.0);
+        boatRepo.save(boat);
+
+        Boat boat2 = boatRepo.findByBoatName("TestUpdate");
+        assertEquals("TestUpdate", boat2.getBoatName());
+
         boat.setBoatName("Changed name");
         boatRepo.save(boat);
-        Boat boat2 = boatRepo.findByBoatName("Changed name");
-        assertNull(boatRepo.findByBoatName("Test"));
-        assertEquals("Changed name", boat2.getBoatName());
+        Boat boat3 = boatRepo.findByBoatName("Changed name");
+        assertNull(boatRepo.findByBoatName("TestUpdate"));
+        assertEquals("Changed name", boat3.getBoatName());
     }
 
 }
